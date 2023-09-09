@@ -1,4 +1,57 @@
-export default function Home() {
+'use client'
+
+import { useState } from 'react'
+import BotChat from '../components/BotChat'
+import UserChat from '../components/UserChat'
+import { AxiosError } from 'axios'
+
+import { axiosInstance } from '../utils/api'
+
+import { ChatHistory } from '../interfaces/index'
+
+const Home: React.FC = (): JSX.Element => {
+  const [isUserTyping, setIsUserTyping] = useState<boolean>(false)
+  const [chatHistory, setChatHistory] = useState<ChatHistory[]>([])
+  const [userInputField, setUserInputField] = useState<string>('')
+  const [, setBotCurrentMessage] = useState<string>('')
+
+  const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = Object.fromEntries(new FormData(e.currentTarget))
+    try {
+      const currentMessages = chatHistory
+      currentMessages.push({ role: 'user', content: userInputField })
+      // put the user messages on state.
+      setChatHistory(currentMessages)
+
+      setUserInputField('')
+      const messageTransaction = await axiosInstance.post('/chatbot', formData)
+      currentMessages.push({
+        role: messageTransaction.data.botAnswer.role,
+        content: messageTransaction.data.botAnswer.content,
+      })
+      // set bot messages to state
+      setChatHistory(currentMessages)
+
+      setBotCurrentMessage(messageTransaction.data.botAnswer.content)
+    } catch (error) {
+      const err = error as AxiosError
+      if (err.response) {
+        console.error(err.response.data)
+        console.error(err.response.status)
+        console.error(err.response.headers)
+      } else if (err.request) {
+        console.error(err.request)
+      } else {
+        console.error('Something went wrong: ', err)
+      }
+    }
+  }
+
+  const fillInputField = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setUserInputField(e.target.value)
+  }
+
   return (
     <main
       id="main"
@@ -9,53 +62,46 @@ export default function Home() {
         className="flex w-full max-w-xl flex-grow flex-col overflow-hidden rounded-lg bg-white shadow-xl"
       >
         <div className="flex h-0 flex-grow flex-col overflow-auto p-4">
-          <div className="mt-2 flex w-full max-w-xs space-x-3">
-            <div
-              id="avatar-image"
-              className="h-10 w-10 flex-shrink-0 rounded-full bg-botAvatar"
-            ></div>
-
-            <div>
-              <div className="rounded-r-lg rounded-bl-lg bg-botChat p-3">
-                <p className="text-sm text-botText">
-                  Snippet of the IA chat text
-                </p>
-              </div>
-              <span className="text-xs leading-none text-gray-500">
-                2 min ago
-              </span>
-            </div>
-          </div>
-
-          <div className="ml-auto mt-2 flex w-full max-w-xs justify-end space-x-3">
-            <div>
-              <div className="rounded-l-lg rounded-br-lg bg-userChat p-3 text-white">
-                <p className="text-sm text-userText">
-                  Snippet of customer user chat text
-                </p>
-              </div>
-              <span className="text-xs leading-none text-gray-500">
-                3 min ago
-              </span>
-            </div>
-            <div className="h-10 w-10 flex-shrink-0 rounded-full bg-gray-300"></div>
-          </div>
+          {chatHistory.map((user, index) => {
+            if (user.role === 'user') {
+              return <UserChat key={index} message={user.content} />
+            } else {
+              return <BotChat key={index} message={user.content} />
+            }
+          })}
         </div>
-        <div className="flex flex-col bg-inputText p-4">
-          <input
-            type="text"
-            className="flex h-10 w-full items-center rounded px-3 text-sm"
-            placeholder="Type your message..."
-          />
+        <div className="bg-inputText p-4">
+          <form onSubmit={sendMessage} className="flex flex-col">
+            <input
+              type="text"
+              className="flex h-10 w-full items-center rounded px-3 text-sm"
+              placeholder="Type your message..."
+              onChange={fillInputField}
+              value={userInputField}
+              name="message"
+            />
 
-          <button
-            className="mt-4 w-28 self-end rounded bg-sendButton text-buttonText"
-            type="submit"
-          >
-            Send
-          </button>
+            {userInputField.length > 0 ? (
+              <button
+                className="mt-4 w-28 self-end rounded bg-sendButton text-buttonText"
+                type="submit"
+              >
+                Send
+              </button>
+            ) : (
+              <button
+                className="mt-4 w-28 self-end rounded bg-sendButton text-buttonText disabled:opacity-75"
+                type="submit"
+                disabled
+              >
+                Send
+              </button>
+            )}
+          </form>
         </div>
       </div>
     </main>
   )
 }
+
+export default Home
