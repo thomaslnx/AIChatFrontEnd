@@ -4,10 +4,14 @@ import { useState } from 'react'
 import BotChat from '../components/BotChat'
 import UserChat from '../components/UserChat'
 import { AxiosError } from 'axios'
+import { toast } from 'react-toastify'
 
 import { axiosInstance } from '../utils/api'
 
 import { ChatHistory } from '../interfaces/index'
+
+import RequestErrorToast from '../components/Toasts/RequestErrorToast'
+import ResponseErrorToast from '../components/Toasts/ResponseErrorToast'
 
 const Home: React.FC = (): JSX.Element => {
   const [isUserTyping, setIsUserTyping] = useState<boolean>(false)
@@ -37,11 +41,11 @@ const Home: React.FC = (): JSX.Element => {
     } catch (error) {
       const err = error as AxiosError
       if (err.response) {
-        console.error(err.response.data)
-        console.error(err.response.status)
-        console.error(err.response.headers)
+        toast.error('Tha AI API failed to response you!')
+        // console.error(err.response.data)
       } else if (err.request) {
-        console.error(err.request)
+        toast.error('Your Request Have Failed!')
+        // console.error(err.request)
       } else {
         console.error('Something went wrong: ', err)
       }
@@ -57,6 +61,8 @@ const Home: React.FC = (): JSX.Element => {
       id="main"
       className="flex min-h-screen w-screen flex-col items-center justify-center bg-main p-10 text-gray-800"
     >
+      <RequestErrorToast />
+      <ResponseErrorToast />
       <div
         id="ia-chat-window"
         className="flex w-full max-w-xl flex-grow flex-col overflow-hidden rounded-lg bg-white shadow-xl"
