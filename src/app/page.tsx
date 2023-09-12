@@ -14,7 +14,7 @@ import RequestErrorToast from '../components/Toasts/RequestErrorToast'
 import ResponseErrorToast from '../components/Toasts/ResponseErrorToast'
 
 const Home: React.FC = (): JSX.Element => {
-  const [isUserTyping, setIsUserTyping] = useState<boolean>(false)
+  // const [isUserTyping, setIsUserTyping] = useState<boolean>(false)
   const [chatHistory, setChatHistory] = useState<ChatHistory[]>([])
   const [userInputField, setUserInputField] = useState<string>('')
   const [, setBotCurrentMessage] = useState<string>('')

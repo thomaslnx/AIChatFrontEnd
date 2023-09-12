@@ -1,34 +1,53 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ai Chatbot Frontend Job Challenge
 
-## Getting Started
+This project aims to demonstrate my skills as a full-stack developer in an AI-powered chatbot for an open role for a company that uses AI to create awesome solutions. This part of the challenge intends to test my frontend skills
+about can turning layout into a functional code. The color pallet I use the on on the challenge's pdf, I hope you enjoy it.
 
-First, run the development server:
+## Tech Stack
+* [Technologies](#technologies)
+* [In Action App](#in-action-app)
+* [Project Structure](#project-structure)
+* [How to Run the Project](#run-project)
+* [Last Words](#last-words)
 
+## Technologies
+This project uses:
+* React/Next: v18.16.0
+* TypeScript: 5.2.2 version
+* Axios: 8.48.0 version
+* Tailwind CSS: 3.3.3 version
+
+## In Action App
+
+Bellow there is a snick peak of the front end in action. The questions are sent to the backend through node REST API, then the backend make the AI API request and sends the answer to the frontend. In case of a request or other failure to the backend, there an error handler implemented at the frontend to warn the user. 
+
+<span align="center">
+  <img src="readme_assets/AI-Chatbot-Frontend.gif" width="100%">
+</span>
+
+## Project Structure<br>
+
+It's a good practice in a frontend project to make components that could be used more often, separated components. So the project has a folder that stores all the  application's components. In large projects is good to separate the interfaces used to type the variables in one single place, then I made it too as well I separated the API connection config into its own folder too.<br>
+## How to Run the Project
+To run the project after make the github clone, access the project folder and inside type:
+
+```bash 
+npm install
+
+#or
+
+yarn
+``` 
+to install all project's needed dependencies.
+
+then type<br>
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
+to run the project. To access the link of the project just go to your browser and type `http://localhost:3000`
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Last Words
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+I just wanna say tank you for the opportunity to show my skills to the company, for the interview process, one of the bests that I have participating lately very kind and attention people with my person. <br>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+I hope you like this project, because I put much effort on it. Was pretty challenge and fun make something using AI and other techs.
